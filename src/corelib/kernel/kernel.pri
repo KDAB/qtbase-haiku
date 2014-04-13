@@ -146,12 +146,15 @@ unix|integrity {
 
    contains(QT_CONFIG, clock-gettime):include($$QT_SOURCE_TREE/config.tests/unix/clock-gettime/clock-gettime.pri)
 
-    !android {
-        SOURCES += kernel/qsharedmemory_unix.cpp \
-                   kernel/qsystemsemaphore_unix.cpp
-    } else {
+    android {
         SOURCES += kernel/qsharedmemory_android.cpp \
                    kernel/qsystemsemaphore_android.cpp
+    } else:haiku {
+        SOURCES += kernel/qsharedmemory_haiku.cpp \
+                   kernel/qsystemsemaphore_unix.cpp
+    } else {
+        SOURCES += kernel/qsharedmemory_unix.cpp \
+                   kernel/qsystemsemaphore_unix.cpp
     }
 }
 

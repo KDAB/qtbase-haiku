@@ -83,6 +83,7 @@
      BSD4     - Any BSD 4.4 system
      UNIX     - Any UNIX BSD/SYSV system
      ANDROID  - Android platform
+     HAIKU    - Haiku OS
 
    The following operating systems have variants:
      LINUX    - both Q_OS_LINUX and Q_OS_ANDROID are defined when building for Android
@@ -177,6 +178,8 @@
 #  define Q_OS_INTEGRITY
 #elif defined(VXWORKS) /* there is no "real" VxWorks define - this has to be set in the mkspec! */
 #  define Q_OS_VXWORKS
+#elif defined(__HAIKU) || defined(__HAIKU__) || defined(_HAIKU)
+#  define Q_OS_HAIKU
 #elif defined(__MAKEDEPEND__)
 #else
 #  error "Qt has not been ported to this OS - see http://www.qt-project.org/"

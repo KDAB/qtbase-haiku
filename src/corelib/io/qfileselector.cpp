@@ -384,6 +384,8 @@ QStringList QFileSelectorPrivate::platformSelectors()
 #    elif defined(Q_OS_OSX)
     ret << QStringLiteral("osx");
 #    endif
+#  elif defined(Q_OS_HAIKU)
+    ret << QStringLiteral("haiku");
 #  else
     struct utsname u;
     if (uname(&u) != -1)
