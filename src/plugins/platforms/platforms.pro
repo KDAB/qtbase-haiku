@@ -40,3 +40,5 @@ contains(QT_CONFIG, kms) {
 }
 
 contains(QT_CONFIG, linuxfb): SUBDIRS += linuxfb
+
+SUBDIRS += haiku
