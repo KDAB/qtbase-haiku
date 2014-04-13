@@ -334,4 +334,35 @@ void QHaikuWindow::haikuWindowQuitRequested()
     QWindowSystemInterface::handleCloseEvent(window());
 }
 
+void QHaikuWindow::haikuMouseEvent(const QPoint &localPosition, const QPoint &globalPosition, Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers, Qt::MouseEventSource source)
+{
+    QWindowSystemInterface::handleMouseEvent(window(), localPosition, globalPosition,
+                                             buttons, modifiers, source);
+}
+
+void QHaikuWindow::haikuWheelEvent(const QPoint &localPosition, const QPoint &globalPosition, int delta, Qt::Orientation orientation, Qt::KeyboardModifiers modifiers)
+{
+    QWindowSystemInterface::handleWheelEvent(window(), localPosition, globalPosition, delta, orientation, modifiers);
+}
+
+void QHaikuWindow::haikuKeyEvent(QEvent::Type type, int key, Qt::KeyboardModifiers modifiers, const QString &text)
+{
+    QWindowSystemInterface::handleKeyEvent(window(), type, key, modifiers, text);
+}
+
+void QHaikuWindow::haikuEnteredView()
+{
+    QWindowSystemInterface::handleEnterEvent(window());
+}
+
+void QHaikuWindow::haikuExitedView()
+{
+    QWindowSystemInterface::handleLeaveEvent(window());
+}
+
+void QHaikuWindow::haikuDrawRequest(const QRect &rect)
+{
+    QWindowSystemInterface::handleExposeEvent(window(), QRegion(rect));
+}
+
 QT_END_NAMESPACE

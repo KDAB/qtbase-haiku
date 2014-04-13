@@ -87,14 +87,6 @@ public:
 
     BView* nativeViewHandle() const;
 
-private Q_SLOTS:
-    void haikuMouseEvent(const QPoint &localPosition, const QPoint &globalPosition, Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers, Qt::MouseEventSource source);
-    void haikuWheelEvent(const QPoint &localPosition, const QPoint &globalPosition, int delta, Qt::Orientation orientation, Qt::KeyboardModifiers modifiers);
-    void haikuKeyEvent(QEvent::Type type, int key, Qt::KeyboardModifiers modifiers, const QString &text);
-    void haikuEnteredView();
-    void haikuExitedView();
-    void haikuDrawRequest(const QRect &rect);
-
 private:
     HaikuViewProxy *m_view;
 };

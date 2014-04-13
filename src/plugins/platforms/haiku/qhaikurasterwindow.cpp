@@ -250,7 +250,7 @@ QHaikuRasterWindow::QHaikuRasterWindow(QWindow *window)
             this, SLOT(haikuKeyEvent(QEvent::Type,int,Qt::KeyboardModifiers,QString)));
     connect(haikuView, SIGNAL(enteredView()), this, SLOT(haikuEnteredView()));
     connect(haikuView, SIGNAL(exitedView()), this, SLOT(haikuExitedView()));
-    connect(haikuView, SIGNAL(drawRequest(QRect)), SLOT(haikuDrawRequest(QRect)));
+    connect(haikuView, SIGNAL(drawRequest(QRect)), this, SLOT(haikuDrawRequest(QRect)));
 
     m_view = haikuView;
 
@@ -273,37 +273,6 @@ QHaikuRasterWindow::~QHaikuRasterWindow()
 BView* QHaikuRasterWindow::nativeViewHandle() const
 {
     return m_view;
-}
-
-void QHaikuRasterWindow::haikuMouseEvent(const QPoint &localPosition, const QPoint &globalPosition, Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers, Qt::MouseEventSource source)
-{
-    QWindowSystemInterface::handleMouseEvent(window(), localPosition, globalPosition,
-                                             buttons, modifiers, source);
-}
-
-void QHaikuRasterWindow::haikuWheelEvent(const QPoint &localPosition, const QPoint &globalPosition, int delta, Qt::Orientation orientation, Qt::KeyboardModifiers modifiers)
-{
-    QWindowSystemInterface::handleWheelEvent(window(), localPosition, globalPosition, delta, orientation, modifiers);
-}
-
-void QHaikuRasterWindow::haikuKeyEvent(QEvent::Type type, int key, Qt::KeyboardModifiers modifiers, const QString &text)
-{
-    QWindowSystemInterface::handleKeyEvent(window(), type, key, modifiers, text);
-}
-
-void QHaikuRasterWindow::haikuEnteredView()
-{
-    QWindowSystemInterface::handleEnterEvent(window());
-}
-
-void QHaikuRasterWindow::haikuExitedView()
-{
-    QWindowSystemInterface::handleLeaveEvent(window());
-}
-
-void QHaikuRasterWindow::haikuDrawRequest(const QRect &rect)
-{
-    QWindowSystemInterface::handleExposeEvent(window(), QRegion(rect));
 }
 
 QT_END_NAMESPACE
