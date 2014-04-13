@@ -44,8 +44,11 @@
 
 #include <qpa/qplatformbackingstore.h>
 
+#include "qhaikubuffer.h"
+
 QT_BEGIN_NAMESPACE
 
+class BBitmap;
 class QHaikuRasterWindow;
 
 class QHaikuRasterBackingStore : public QPlatformBackingStore
@@ -57,13 +60,11 @@ public:
     QPaintDevice *paintDevice() Q_DECL_OVERRIDE;
     void flush(QWindow *window, const QRegion &region, const QPoint &offset) Q_DECL_OVERRIDE;
     void resize(const QSize &size, const QRegion &staticContents) Q_DECL_OVERRIDE;
-    void beginPaint(const QRegion &region) Q_DECL_OVERRIDE;
-    void endPaint() Q_DECL_OVERRIDE;
 
 private:
-    QHaikuRasterWindow *platformWindow() const;
-
-    QWindow *m_window;
+    BBitmap *m_bitmap;
+    QHaikuBuffer m_buffer;
+    QSize m_bufferSize;
 };
 
 QT_END_NAMESPACE

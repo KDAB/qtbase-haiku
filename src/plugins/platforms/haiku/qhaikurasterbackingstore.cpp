@@ -42,66 +42,59 @@
 #include "qhaikurasterbackingstore.h"
 #include "qhaikurasterwindow.h"
 
+#include <Bitmap.h>
 #include <View.h>
 
 QT_BEGIN_NAMESPACE
 
 QHaikuRasterBackingStore::QHaikuRasterBackingStore(QWindow *window)
     : QPlatformBackingStore(window)
-    , m_window(window)
+    , m_bitmap(0)
 {
 }
 
 QHaikuRasterBackingStore::~QHaikuRasterBackingStore()
 {
+    delete m_bitmap;
+    m_bitmap = 0;
 }
 
 QPaintDevice *QHaikuRasterBackingStore::paintDevice()
 {
-    if (platformWindow() && platformWindow()->hasBuffers())
-        return platformWindow()->renderBuffer().image();
+    if (!m_bufferSize.isEmpty() && m_bitmap)
+        return m_buffer.image();
 
     return 0;
 }
 
 void QHaikuRasterBackingStore::flush(QWindow *window, const QRegion &region, const QPoint &offset)
 {
-    Q_UNUSED(offset)
+    Q_UNUSED(region);
+    Q_UNUSED(offset);
 
-    QHaikuWindow *targetWindow = 0;
-    if (window)
-        targetWindow = static_cast<QHaikuWindow *>(window->handle());
+    if (!window)
+        return;
 
-    if (!targetWindow || targetWindow == platformWindow()) {
-        // update the display with newly rendered content
-        platformWindow()->post(region);
-    }
+    QHaikuRasterWindow *targetWindow = static_cast<QHaikuRasterWindow*>(window->handle());
+
+    BView *view = targetWindow->nativeViewHandle();
+
+    view->LockLooper();
+    view->DrawBitmap(m_bitmap);
+    view->UnlockLooper();
 }
 
 void QHaikuRasterBackingStore::resize(const QSize &size, const QRegion &staticContents)
 {
-    Q_UNUSED(size);
     Q_UNUSED(staticContents);
 
-    // NOTE: defer resizing window buffers until next paint as
-    // resize() can be called multiple times before a paint occurs
-}
+    if (m_bufferSize == size)
+        return;
 
-void QHaikuRasterBackingStore::beginPaint(const QRegion &region)
-{
-    Q_UNUSED(region);
-
-    platformWindow()->adjustBufferSize();
-}
-
-void QHaikuRasterBackingStore::endPaint()
-{
-}
-
-QHaikuRasterWindow *QHaikuRasterBackingStore::platformWindow() const
-{
-    Q_ASSERT(m_window->handle());
-    return static_cast<QHaikuRasterWindow*>(m_window->handle());
+    delete m_bitmap;
+    m_bitmap = new BBitmap(BRect(0, 0, size.width(), size.height()), B_RGB32, false, true);
+    m_buffer = QHaikuBuffer(m_bitmap);
+    m_bufferSize = size;
 }
 
 QT_END_NAMESPACE

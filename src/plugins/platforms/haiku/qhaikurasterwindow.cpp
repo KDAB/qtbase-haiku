@@ -43,7 +43,6 @@
 
 #include "qhaikukeymapper.h"
 
-#include <Bitmap.h>
 #include <View.h>
 #include <Window.h>
 
@@ -235,7 +234,6 @@ void HaikuViewProxy::handleKeyEvent(QEvent::Type type, BMessage *message)
 
 QHaikuRasterWindow::QHaikuRasterWindow(QWindow *window)
     : QHaikuWindow(window)
-    , m_bitmap(0)
 {
     qRegisterMetaType<QEvent::Type>();
     qRegisterMetaType<Qt::MouseButtons>();
@@ -264,9 +262,6 @@ QHaikuRasterWindow::QHaikuRasterWindow(QWindow *window)
 
 QHaikuRasterWindow::~QHaikuRasterWindow()
 {
-    delete m_bitmap;
-    m_bitmap = 0;
-
     m_window->LockLooper();
     m_view->RemoveSelf();
     m_window->UnlockLooper();
@@ -275,44 +270,9 @@ QHaikuRasterWindow::~QHaikuRasterWindow()
     m_view = 0;
 }
 
-void QHaikuRasterWindow::post(const QRegion &dirty)
+BView* QHaikuRasterWindow::nativeViewHandle() const
 {
-    Q_UNUSED(dirty);
-
-    m_view->LockLooper();
-    m_view->DrawBitmap(m_bitmap);
-    m_view->UnlockLooper();
-}
-
-QHaikuBuffer &QHaikuRasterWindow::renderBuffer()
-{
-    return m_buffer;
-}
-
-bool QHaikuRasterWindow::hasBuffers() const
-{
-    return !bufferSize().isEmpty();
-}
-
-void QHaikuRasterWindow::adjustBufferSize()
-{
-    if (window()->size() != bufferSize())
-        setBufferSize(window()->size());
-}
-
-void QHaikuRasterWindow::setBufferSize(const QSize &size)
-{
-    if (m_bitmap)
-        delete m_bitmap;
-
-    m_bitmap = new BBitmap(BRect(0, 0, size.width(), size.height()), B_RGB32, false, true);
-    m_buffer = QHaikuBuffer(m_bitmap);
-    m_bufferSize = size;
-}
-
-QSize QHaikuRasterWindow::bufferSize() const
-{
-    return m_bufferSize;
+    return m_view;
 }
 
 void QHaikuRasterWindow::haikuMouseEvent(const QPoint &localPosition, const QPoint &globalPosition, Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers, Qt::MouseEventSource source)
@@ -343,7 +303,7 @@ void QHaikuRasterWindow::haikuExitedView()
 
 void QHaikuRasterWindow::haikuDrawRequest(const QRect &rect)
 {
-    post(QRegion(rect));
+    QWindowSystemInterface::handleExposeEvent(window(), QRegion(rect));
 }
 
 QT_END_NAMESPACE

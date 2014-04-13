@@ -43,7 +43,6 @@
 #define QHAIKURASTERWINDOW_H
 
 #include "qhaikuwindow.h"
-#include "qhaikubuffer.h"
 
 #include <View.h>
 
@@ -86,13 +85,7 @@ public:
     explicit QHaikuRasterWindow(QWindow *window);
     ~QHaikuRasterWindow();
 
-    void post(const QRegion &dirty);
-
-    QHaikuBuffer &renderBuffer();
-    bool hasBuffers() const;
-    void adjustBufferSize();
-    void setBufferSize(const QSize &size);
-    QSize bufferSize() const;
+    BView* nativeViewHandle() const;
 
 private Q_SLOTS:
     void haikuMouseEvent(const QPoint &localPosition, const QPoint &globalPosition, Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers, Qt::MouseEventSource source);
@@ -103,10 +96,7 @@ private Q_SLOTS:
     void haikuDrawRequest(const QRect &rect);
 
 private:
-    BBitmap *m_bitmap;
     HaikuViewProxy *m_view;
-    QHaikuBuffer m_buffer;
-    QSize m_bufferSize;
 };
 
 QT_END_NAMESPACE
