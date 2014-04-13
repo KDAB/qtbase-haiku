@@ -4100,6 +4100,7 @@ fi
 
 [ "$XPLATFORM_MINGW" = "yes" ] && QMakeVar add styles "windowsxp windowsvista"
 [ "$XPLATFORM_ANDROID" = "yes" ] && QMakeVar add styles "android"
+[ "$XPLATFORM_HAIKU" = "yes" ] && QMakeVar add styles "haiku"
 
 # detect zlib
 if [ "$CFG_ZLIB" = "no" ]; then

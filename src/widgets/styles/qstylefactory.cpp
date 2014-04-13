@@ -67,6 +67,9 @@
 #ifndef QT_NO_STYLE_WINDOWSMOBILE
 #include "qwindowsmobilestyle_p.h"
 #endif
+#ifndef QT_NO_STYLE_HAIKU
+#include "qhaikustyle_p.h"
+#endif
 
 #if !defined(QT_NO_STYLE_MAC) && defined(Q_OS_MAC)
 #  include "qmacstyle_mac_p.h"
@@ -151,6 +154,11 @@ QStyle *QStyleFactory::create(const QString& key)
         ret = new QAndroidStyle;
     else
 #endif
+#ifndef QT_NO_STYLE_HAIKU
+    if (style == QLatin1String("haiku"))
+        ret = new QHaikuStyle;
+    else
+#endif
 #ifndef QT_NO_STYLE_GTK
     if (style == QLatin1String("gtk") || style == QLatin1String("gtk+"))
         ret = new QGtkStyle;
@@ -217,6 +225,10 @@ QStringList QStyleFactory::keys()
 #ifndef QT_NO_STYLE_ANDROID
     if (!list.contains(QLatin1String("Android")))
         list << QLatin1String("Android");
+#endif
+#ifndef QT_NO_STYLE_HAIKU
+    if (!list.contains(QLatin1String("Haiku")))
+        list << QLatin1String("Haiku");
 #endif
 #ifndef QT_NO_STYLE_GTK
     if (!list.contains(QLatin1String("GTK+")))

@@ -13,6 +13,7 @@ SOURCES = \
     qhaikurasterbackingstore.cpp \
     qhaikurasterwindow.cpp \
     qhaikuscreen.cpp \
+    qhaikutheme.cpp \
     qhaikuutils.cpp \
     qhaikuwindow.cpp
 
@@ -27,6 +28,7 @@ HEADERS = \
     qhaikurasterbackingstore.h \
     qhaikurasterwindow.h \
     qhaikuscreen.h \
+    qhaikutheme.h \
     qhaikuutils.h \
     qhaikuwindow.h
 

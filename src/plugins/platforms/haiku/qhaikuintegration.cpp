@@ -46,6 +46,7 @@
 #include "qhaikurasterbackingstore.h"
 #include "qhaikurasterwindow.h"
 #include "qhaikuscreen.h"
+#include "qhaikutheme.h"
 
 #include <QCoreApplication>
 #include <QFileInfo>
@@ -123,6 +124,21 @@ QPlatformBackingStore *QHaikuIntegration::createPlatformBackingStore(QWindow *wi
 QAbstractEventDispatcher *QHaikuIntegration::createEventDispatcher() const
 {
     return createUnixEventDispatcher();
+}
+
+static const QLatin1String haikuThemeName("haiku");
+
+QStringList QHaikuIntegration::themeNames() const
+{
+    return QStringList(haikuThemeName);
+}
+
+QPlatformTheme *QHaikuIntegration::createPlatformTheme(const QString &name) const
+{
+    if (haikuThemeName == name)
+        return new QHaikuTheme();
+
+    return 0;
 }
 
 QT_END_NAMESPACE

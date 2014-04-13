@@ -39,40 +39,19 @@
 **
 ****************************************************************************/
 
-#ifndef QHAIKUINTEGRATION_H
-#define QHAIKUINTEGRATION_H
+#ifndef QHAIKUTHEME_H
+#define QHAIKUTHEME_H
 
-#include <qpa/qplatformintegration.h>
+#include <qpa/qplatformtheme.h>
 
 QT_BEGIN_NAMESPACE
 
-class QHaikuClipboard;
-class QHaikuScreen;
-
-class QHaikuIntegration : public QPlatformIntegration
+class QHaikuTheme : public QPlatformTheme
 {
 public:
-    explicit QHaikuIntegration(const QStringList &paramList);
-    ~QHaikuIntegration();
+    QHaikuTheme();
 
-    bool hasCapability(QPlatformIntegration::Capability cap) const Q_DECL_OVERRIDE;
-
-    QPlatformWindow *createPlatformWindow(QWindow *window) const Q_DECL_OVERRIDE;
-    QPlatformBackingStore *createPlatformBackingStore(QWindow *window) const Q_DECL_OVERRIDE;
-    QAbstractEventDispatcher *createEventDispatcher() const Q_DECL_OVERRIDE;
-
-    QPlatformFontDatabase *fontDatabase() const Q_DECL_OVERRIDE;
-
-#ifndef QT_NO_CLIPBOARD
-    QPlatformClipboard *clipboard() const Q_DECL_OVERRIDE;
-#endif
-
-    QStringList themeNames() const Q_DECL_OVERRIDE;
-    QPlatformTheme *createPlatformTheme(const QString &name) const Q_DECL_OVERRIDE;
-
-private:
-    QHaikuClipboard *m_clipboard;
-    QHaikuScreen *m_screen;
+    QVariant themeHint(ThemeHint hint) const Q_DECL_OVERRIDE;
 };
 
 QT_END_NAMESPACE

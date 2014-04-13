@@ -133,3 +133,11 @@ contains( styles, android ) {
 } else {
     DEFINES += QT_NO_STYLE_ANDROID
 }
+
+contains( styles, haiku ) {
+    HEADERS += styles/qhaikustyle_p.h
+    HEADERS += styles/qhaikustyle_p_p.h
+    SOURCES += styles/qhaikustyle.cpp
+} else {
+    DEFINES += QT_NO_STYLE_HAIKU
+}
