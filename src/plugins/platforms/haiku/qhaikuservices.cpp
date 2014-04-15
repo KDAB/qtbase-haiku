@@ -1,6 +1,6 @@
 /***************************************************************************
 **
-** Copyright (C) 2013 - 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com, author Tobias Koenig <tobias.koenig@kdab.com>
+** Copyright (C) 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com, author Tobias Koenig <tobias.koenig@kdab.com>
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the plugins of the Qt Toolkit.
@@ -39,45 +39,31 @@
 **
 ****************************************************************************/
 
-#ifndef QHAIKUINTEGRATION_H
-#define QHAIKUINTEGRATION_H
+#include "qhaikuservices.h"
 
-#include <qpa/qplatformintegration.h>
+#include <QString>
+#include <QUrl>
+
+#include <stdlib.h>
 
 QT_BEGIN_NAMESPACE
 
-class QHaikuClipboard;
-class QHaikuScreen;
-class QHaikuServices;
-
-class QHaikuIntegration : public QPlatformIntegration
+bool QHaikuServices::openUrl(const QUrl &url)
 {
-public:
-    explicit QHaikuIntegration(const QStringList &paramList);
-    ~QHaikuIntegration();
+    const QString cmd = QStringLiteral("open %1").arg(url.toString());
+    ::system(cmd.toLocal8Bit().constData());
 
-    bool hasCapability(QPlatformIntegration::Capability cap) const Q_DECL_OVERRIDE;
+    return true;
+}
 
-    QPlatformWindow *createPlatformWindow(QWindow *window) const Q_DECL_OVERRIDE;
-    QPlatformBackingStore *createPlatformBackingStore(QWindow *window) const Q_DECL_OVERRIDE;
-    QAbstractEventDispatcher *createEventDispatcher() const Q_DECL_OVERRIDE;
+bool QHaikuServices::openDocument(const QUrl &url)
+{
+    return openUrl(url);
+}
 
-    QPlatformFontDatabase *fontDatabase() const Q_DECL_OVERRIDE;
-    QPlatformServices *services() const Q_DECL_OVERRIDE;
-
-#ifndef QT_NO_CLIPBOARD
-    QPlatformClipboard *clipboard() const Q_DECL_OVERRIDE;
-#endif
-
-    QStringList themeNames() const Q_DECL_OVERRIDE;
-    QPlatformTheme *createPlatformTheme(const QString &name) const Q_DECL_OVERRIDE;
-
-private:
-    QHaikuClipboard *m_clipboard;
-    QHaikuScreen *m_screen;
-    QHaikuServices *m_services;
-};
+QByteArray QHaikuServices::desktopEnvironment() const
+{
+    return QByteArray("Haiku");
+}
 
 QT_END_NAMESPACE
-
-#endif

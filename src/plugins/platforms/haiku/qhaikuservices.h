@@ -1,6 +1,6 @@
 /***************************************************************************
 **
-** Copyright (C) 2013 - 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com, author Tobias Koenig <tobias.koenig@kdab.com>
+** Copyright (C) 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com, author Tobias Koenig <tobias.koenig@kdab.com>
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the plugins of the Qt Toolkit.
@@ -39,43 +39,20 @@
 **
 ****************************************************************************/
 
-#ifndef QHAIKUINTEGRATION_H
-#define QHAIKUINTEGRATION_H
+#ifndef QHAIKUSERVICES_H
+#define QHAIKUSERVICES_H
 
-#include <qpa/qplatformintegration.h>
+#include <qpa/qplatformservices.h>
 
 QT_BEGIN_NAMESPACE
 
-class QHaikuClipboard;
-class QHaikuScreen;
-class QHaikuServices;
-
-class QHaikuIntegration : public QPlatformIntegration
+class QHaikuServices : public QPlatformServices
 {
 public:
-    explicit QHaikuIntegration(const QStringList &paramList);
-    ~QHaikuIntegration();
+    bool openUrl(const QUrl &url) Q_DECL_OVERRIDE;
+    bool openDocument(const QUrl &url) Q_DECL_OVERRIDE;
 
-    bool hasCapability(QPlatformIntegration::Capability cap) const Q_DECL_OVERRIDE;
-
-    QPlatformWindow *createPlatformWindow(QWindow *window) const Q_DECL_OVERRIDE;
-    QPlatformBackingStore *createPlatformBackingStore(QWindow *window) const Q_DECL_OVERRIDE;
-    QAbstractEventDispatcher *createEventDispatcher() const Q_DECL_OVERRIDE;
-
-    QPlatformFontDatabase *fontDatabase() const Q_DECL_OVERRIDE;
-    QPlatformServices *services() const Q_DECL_OVERRIDE;
-
-#ifndef QT_NO_CLIPBOARD
-    QPlatformClipboard *clipboard() const Q_DECL_OVERRIDE;
-#endif
-
-    QStringList themeNames() const Q_DECL_OVERRIDE;
-    QPlatformTheme *createPlatformTheme(const QString &name) const Q_DECL_OVERRIDE;
-
-private:
-    QHaikuClipboard *m_clipboard;
-    QHaikuScreen *m_screen;
-    QHaikuServices *m_services;
+    QByteArray desktopEnvironment() const Q_DECL_OVERRIDE;
 };
 
 QT_END_NAMESPACE

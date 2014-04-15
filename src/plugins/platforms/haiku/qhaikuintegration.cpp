@@ -46,6 +46,7 @@
 #include "qhaikurasterbackingstore.h"
 #include "qhaikurasterwindow.h"
 #include "qhaikuscreen.h"
+#include "qhaikuservices.h"
 #include "qhaikutheme.h"
 
 #include <QCoreApplication>
@@ -67,6 +68,8 @@ static long int startApplicationThread(void *data)
 QHaikuIntegration::QHaikuIntegration(const QStringList &parameters)
     : m_clipboard(new QHaikuClipboard)
 {
+    Q_UNUSED(parameters);
+
     const QString signature = QStringLiteral("application/x-vnd.%1").arg(QFileInfo(QCoreApplication::applicationFilePath()).fileName());
 
     QHaikuApplication *app = new QHaikuApplication(signature.toLocal8Bit());
@@ -78,6 +81,8 @@ QHaikuIntegration::QHaikuIntegration(const QStringList &parameters)
 
     m_screen = new QHaikuScreen;
 
+    m_services = new QHaikuServices;
+
     // notify system about available screen
     screenAdded(m_screen);
 }
@@ -86,6 +91,9 @@ QHaikuIntegration::~QHaikuIntegration()
 {
     delete m_clipboard;
     m_clipboard = 0;
+
+    delete m_services;
+    m_services = 0;
 
     delete m_screen;
     m_screen = 0;
@@ -102,6 +110,11 @@ bool QHaikuIntegration::hasCapability(QPlatformIntegration::Capability capabilit
 QPlatformFontDatabase *QHaikuIntegration::fontDatabase() const
 {
     return QPlatformIntegration::fontDatabase();
+}
+
+QPlatformServices *QHaikuIntegration::services() const
+{
+    return m_services;
 }
 
 QPlatformClipboard *QHaikuIntegration::clipboard() const
