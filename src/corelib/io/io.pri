@@ -150,6 +150,8 @@ win32 {
             SOURCES += io/qstandardpaths_blackberry.cpp
         } else:android:!android-no-sdk {
             SOURCES += io/qstandardpaths_android.cpp
+        } else:haiku {
+            SOURCES += io/qstandardpaths_haiku.cpp
         } else {
             SOURCES += io/qstandardpaths_unix.cpp
         }
