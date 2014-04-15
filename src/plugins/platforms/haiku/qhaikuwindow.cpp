@@ -53,9 +53,14 @@
 
 QT_BEGIN_NAMESPACE
 
-HaikuWindowProxy::HaikuWindowProxy(QWindow *window, QObject *parent)
+enum {
+    DefaultWindowWidth = 160,
+    DefaultWindowHeight = 160
+};
+
+HaikuWindowProxy::HaikuWindowProxy(QWindow *window, const QRect &rect, QObject *parent)
     : QObject(parent)
-    , BWindow(BRect(window->x(), window->y(), window->x() + window->width() - 1, window->y() + window->height() - 1),
+    , BWindow(BRect(rect.x(), rect.y(), rect.right() - 1, rect.bottom() - 1),
               window->title().toUtf8(), B_NO_BORDER_WINDOW_LOOK, B_NORMAL_WINDOW_FEEL, 0)
     , m_qtCalledZoom(false)
     , m_zoomInProgress(false)
@@ -118,7 +123,9 @@ QHaikuWindow::QHaikuWindow(QWindow *window)
     , m_window(0)
     , m_windowState(Qt::WindowNoState)
 {
-    HaikuWindowProxy *haikuWindow = new HaikuWindowProxy(window, 0);
+    const QRect rect = initialGeometry(window, window->geometry(), DefaultWindowWidth, DefaultWindowHeight);
+
+    HaikuWindowProxy *haikuWindow = new HaikuWindowProxy(window, rect, 0);
     connect(haikuWindow, SIGNAL(moved(QPoint)), SLOT(haikuWindowMoved(QPoint)));
     connect(haikuWindow, SIGNAL(resized(QSize,bool)), SLOT(haikuWindowResized(QSize,bool)));
     connect(haikuWindow, SIGNAL(windowActivated(bool)), SLOT(haikuWindowActivated(bool)));
