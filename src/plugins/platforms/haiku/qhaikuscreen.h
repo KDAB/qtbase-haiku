@@ -55,6 +55,8 @@ public:
     QHaikuScreen();
     ~QHaikuScreen();
 
+    QPixmap grabWindow(WId window, int x, int y, int width, int height) const Q_DECL_OVERRIDE;
+
     QRect geometry() const Q_DECL_OVERRIDE;
     int depth() const Q_DECL_OVERRIDE;
     QImage::Format format() const Q_DECL_OVERRIDE;

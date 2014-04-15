@@ -46,7 +46,9 @@
 
 #include <qpa/qwindowsysteminterface.h>
 
+#include <Bitmap.h>
 #include <Screen.h>
+#include <Window.h>
 
 QHaikuScreen::QHaikuScreen()
     : m_screen(new BScreen(B_MAIN_SCREEN_ID))
@@ -62,6 +64,39 @@ QHaikuScreen::~QHaikuScreen()
 
     delete m_cursor;
     m_cursor = 0;
+}
+
+QPixmap QHaikuScreen::grabWindow(WId winId, int x, int y, int width, int height) const
+{
+    if (width == 0 || height == 0)
+        return QPixmap();
+
+    BScreen screen(nullptr);
+    BBitmap *bitmap = nullptr;
+    screen.GetBitmap(&bitmap);
+
+    const BRect frame = (winId ? ((BWindow*)winId)->Frame() : screen.Frame());
+
+    const int absoluteX = frame.left + x;
+    const int absoluteY = frame.top + y;
+
+    if (width < 0)
+        width = frame.Width() - x;
+    if (height < 0)
+        height = frame.Height() - y;
+
+    const QImage::Format format = QHaikuUtils::colorSpaceToImageFormat(bitmap->ColorSpace());
+
+    // get image of complete screen
+    QImage image((uchar*)bitmap->Bits(), screen.Frame().Width() + 1, screen.Frame().Height() + 1, bitmap->BytesPerRow(), format);
+
+    // extract the area of the requested window
+    QRect grabRect(absoluteX, absoluteY, width, height);
+    image = image.copy(grabRect);
+
+    delete bitmap;
+
+    return QPixmap::fromImage(image);
 }
 
 QRect QHaikuScreen::geometry() const
