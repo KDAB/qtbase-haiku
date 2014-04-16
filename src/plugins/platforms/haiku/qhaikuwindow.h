@@ -98,6 +98,8 @@ public:
     void setWindowState(Qt::WindowState state) Q_DECL_OVERRIDE;
     void setWindowFlags(Qt::WindowFlags flags) Q_DECL_OVERRIDE;
 
+    void setWindowTitle(const QString &title) Q_DECL_OVERRIDE;
+
     void propagateSizeHints() Q_DECL_OVERRIDE;
 
 protected:

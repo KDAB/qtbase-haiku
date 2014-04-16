@@ -294,6 +294,11 @@ void QHaikuWindow::setWindowFlags(Qt::WindowFlags flags)
     m_window->SetFlags(wflag);
 }
 
+void QHaikuWindow::setWindowTitle(const QString &title)
+{
+    m_window->SetTitle(title.toLocal8Bit().constData());
+}
+
 void QHaikuWindow::propagateSizeHints()
 {
     m_window->SetSizeLimits(window()->minimumSize().width(),
