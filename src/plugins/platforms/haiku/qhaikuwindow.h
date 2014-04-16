@@ -90,6 +90,7 @@ public:
     void setVisible(bool visible) Q_DECL_OVERRIDE;
 
     bool isExposed() const Q_DECL_OVERRIDE;
+    bool isActive() const Q_DECL_OVERRIDE;
 
     WId winId() const Q_DECL_OVERRIDE;
     BWindow* nativeHandle() const;

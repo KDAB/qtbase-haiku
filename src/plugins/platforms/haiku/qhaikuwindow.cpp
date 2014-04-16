@@ -191,6 +191,11 @@ bool QHaikuWindow::isExposed() const
     return !m_window->IsHidden();
 }
 
+bool QHaikuWindow::isActive() const
+{
+    return m_window->IsActive();
+}
+
 WId QHaikuWindow::winId() const
 {
     return (WId)static_cast<BWindow*>(m_window);
