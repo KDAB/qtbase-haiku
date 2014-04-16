@@ -285,7 +285,13 @@ void QHaikuWindow::setWindowFlags(Qt::WindowFlags flags)
 
 void QHaikuWindow::propagateSizeHints()
 {
-    // nothing to do; silence base class warning
+    m_window->SetSizeLimits(window()->minimumSize().width(),
+                            window()->maximumSize().width(),
+                            window()->minimumSize().height(),
+                            window()->maximumSize().height());
+
+    m_window->SetZoomLimits(window()->maximumSize().width(),
+                            window()->maximumSize().height());
 }
 
 void QHaikuWindow::haikuWindowMoved(const QPoint &pos)
