@@ -157,6 +157,17 @@ void QHaikuWindow::setGeometry(const QRect &rect)
     m_window->ResizeTo(rect.width(), rect.height());
 }
 
+QMargins QHaikuWindow::frameMargins() const
+{
+    const BRect decoratorFrame = m_window->DecoratorFrame();
+    const BRect frame = m_window->Frame();
+
+    return QMargins(frame.left - decoratorFrame.left,
+                    frame.top - decoratorFrame.top,
+                    decoratorFrame.right - frame.right,
+                    decoratorFrame.bottom - frame.bottom);
+}
+
 void QHaikuWindow::setVisible(bool visible)
 {
     if (visible) {

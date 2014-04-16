@@ -86,6 +86,7 @@ public:
     virtual ~QHaikuWindow();
 
     void setGeometry(const QRect &rect) Q_DECL_OVERRIDE;
+    QMargins frameMargins() const Q_DECL_OVERRIDE;
     void setVisible(bool visible) Q_DECL_OVERRIDE;
 
     bool isExposed() const Q_DECL_OVERRIDE;
